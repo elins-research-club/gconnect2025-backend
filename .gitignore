@@ -1,0 +1,43 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+.venv/
+
+# VS Code settings
+.vscode/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Test results
+*.log
+*.coverage
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Python virtual environment metadata
+pip-log.txt
+
+# dotenv environment files
+.env
+
+# PyInstaller
+*.spec
