@@ -16,7 +16,7 @@ API ini jadi jembatan utama buat:
 
 ### Endpoint yang tersedia:
 - `POST /api/v1/data` → Kirim data sensor baru (butuh API Key)
-- `GET /api/v1/data/latest` → Ambil data sensor terbaru (realtime)
+- `GET /api/v1/data/latest` → Ambil data sensor terbaru, Untuk menampilkan data terakhir pada saat frontend pertama kali running.
 - `GET /api/v1/data/history` → Ambil histori data sensor
 - `WS /ws` → WebSocket buat live data stream ke dashboard Frontend
 """
