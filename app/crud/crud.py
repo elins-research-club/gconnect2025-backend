@@ -1,21 +1,21 @@
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
-from database import database
-from schemas import schemas
+from app.database import database
+from app.schemas import schemas
+
 
 def create_sensor_reading(db: Session, data: schemas.SensorDataCreate):
-    """
-    Fungsi ini untuk menerima data sensor (divalidasi oleh skema), terus disimpan ke DB.
+    """Menyimpan satu paket data sensor baru ke dalam database.
 
-    Data sensor yang sudah tervalidasi akan dikonversi jadi objek `SensorReading`,
-    lalu disimpan ke dalam database menggunakan session aktif.
+    Fungsi ini mengonversi data sensor yang sudah divalidasi oleh Pydantic
+    menjadi objek model SQLAlchemy (SensorReading) dan menyimpannya.
 
     Args:
-        db (Session): Session database aktif dari SQLAlchemy.
-        data (SensorDataCreate): Data sensor hasil input dari perangkat (sudah tervalidasi).
+        db: Session database aktif yang disediakan oleh FastAPI.
+        data: Objek Pydantic berisi data sensor yang akan disimpan.
 
     Returns:
-        SensorReading: Data sensor yang berhasil disimpan ke database.
+        Objek SensorReading yang baru saja dibuat, termasuk ID dan timestamp.
     """
     db_reading = database.SensorReading(
         temperature=data.temperature,
@@ -32,36 +32,29 @@ def create_sensor_reading(db: Session, data: schemas.SensorDataCreate):
     return db_reading
 
 def get_latest_sensor_reading(db: Session):
-    # Ambil data sensor paling baru (yang paling terakhir masuk)
-    """
-    Mengambil data sensor terbaru dari database.
+    """Mengambil data sensor paling akhir dari database.
 
-    Query mencari data dengan timestamp paling akhir (paling baru)
-    dari tabel `SensorReading`.
+    Melakukan query untuk mencari satu baris data dengan timestamp terbaru.
 
     Args:
-        db (Session): Session database aktif dari SQLAlchemy.
+        db: Session database aktif.
 
     Returns:
-        SensorReading | None: Data sensor terbaru atau None jika belum ada data.
+        Objek SensorReading terbaru, atau None jika tabel kosong.
     """
     return db.query(database.SensorReading).order_by(database.SensorReading.timestamp.desc()).first()
 
 def get_sensor_readings_by_range(db: Session, days: int):
-    # Hitung tanggal mulai dari 'days' hari yang lalu
-    """
-    Mengambil data sensor berdasarkan rentang hari terakhir.
+    """Mengambil daftar data sensor dalam rentang waktu tertentu.
 
-    Fungsi ini untuk mencari data sensor dari tanggal sekarang
-    dikurangi jumlah hari (misalnya 7 hari terakhir).
+    Query memfilter data sensor dari N hari terakhir hingga saat ini.
 
     Args:
-        db (Session): Session database aktif.
-        days (int): Jumlah hari ke belakang dari hari ini.
+        db: Session database aktif.
+        days: Jumlah hari ke belakang sebagai rentang waktu.
 
     Returns:
-        List[SensorReading]: List data sensor dalam rentang waktu tersebut.
+        Sebuah list berisi objek SensorReading yang diurutkan dari yang paling lama.
     """
     start_date = datetime.now() - timedelta(days=days)
-    # Ambil semua data sensor dari tanggal itu sampai sekarang, urut dari yang paling lama
     return db.query(database.SensorReading).filter(database.SensorReading.timestamp >= start_date).order_by(database.SensorReading.timestamp.asc()).all()

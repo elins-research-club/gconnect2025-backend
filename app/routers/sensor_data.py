@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, Security, HTTPException
 from sqlalchemy.orm import Session
-from database.database import get_db
-import crud
-from security.security import get_api_key
-from routers.websocket import manager
-from schemas import schemas
+from app.database.database import get_db
+from app.schemas import schemas
+from app.routers.websocket import manager
+from app.security.security import get_api_key
+from app.crud import crud
 
 # Router khusus untuk endpoint sensor
 router = APIRouter(prefix="/data", tags=["Sensor Data"])
@@ -18,7 +18,7 @@ async def create_sensor_data(
     """
     Endpoint untuk menerima data sensor baru (dikirim dari hardware).
     - Data tervalidasi berdasarkan skema `SensorDataCreate`
-    - Data disimpan ke database
+    - Data disimpan ke database SQLite
     - Data dibroadcast ke frontend melalui WebSocket
     """
     # Simpan data sensor ke database
@@ -33,8 +33,8 @@ async def create_sensor_data(
 @router.get("/latest", response_model=schemas.SensorData)
 def read_latest_data(db: Session = Depends(get_db)):
     """
-    Endpoint untuk mendapatkan data sensor terbaru (realtime).
-    Cocok untuk ditampilkan di dashboard frontend secara langsung.
+    Endpoint untuk mendapatkan data sensor terbaru.
+    Untuk menampilkan data terakhir pada saat frontend pertama kali running.
     """
     latest_reading = crud.get_latest_sensor_reading(db=db)
     if latest_reading is None:
@@ -48,7 +48,7 @@ def read_history_data(
     ):
     """
     Endpoint untuk mendapatkan data histori berdasarkan range hari.
-    Contoh: `GET /history?days=3` -> Ambil data 3 hari terakhir.
+    Contoh: `GET /history?days=7` -> Ambil data 7 hari terakhir.
     """
     return crud.get_sensor_readings_by_range(db=db, days=days)
 

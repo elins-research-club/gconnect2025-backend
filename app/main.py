@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from database import database
-from routers import sensor_data, websocket
+from app.database import database
+from app.routers import sensor_data, websocket
 
 # Inisialisasi dan setup database saat app dijalankan
 database.create_db_and_tables()
