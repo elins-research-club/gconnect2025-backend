@@ -42,5 +42,6 @@ pip-log.txt
 # PyInstaller
 *.spec
 
-# Sqlite Database
+# Database
 gconnect.db
+*.db-journal
