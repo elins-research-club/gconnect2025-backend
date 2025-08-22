@@ -51,7 +51,7 @@ Untuk menjalankan aplikasi ini secara lokal dengan Virtual Environment.
  
 4.  **Jalankan Server**
     ```bash
-    uvicorn main:app --reload
+    uvicorn app.main:app --reload
     ```
 5.  **Selesai!** Server sekarang berjalan dan dapat diakses di `http://localhost:8000`. Mode `--reload` akan me-restart server secara otomatis setiap kali menyimpan perubahan pada kode.
 
