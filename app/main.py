@@ -30,7 +30,7 @@ app = FastAPI(
 
 # Konfigurasi CORS → biar bisa diakses dari frontend (contoh: React/Next.js)
 origins = [
-    "http://localhost:3000",  # TODO: ganti dengan domain frontend pas production
+    "http://localhost:3000"  # TODO: ganti dengan domain frontend pas production
 ]
 app.add_middleware(
     CORSMiddleware,

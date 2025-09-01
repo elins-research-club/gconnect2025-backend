@@ -51,18 +51,3 @@ def read_history_data(
     Contoh: `GET /history?days=7` -> Ambil data 7 hari terakhir.
     """
     return crud.get_sensor_readings_by_range(db=db, days=days)
-
-# =====================
-# TODO
-# =====================
-# - [ ] Tambahkan fitur filter data berdasarkan jenis sensor tertentu.
-#       Contoh: /history?type=temperature
-#
-# - [ ] Tambahkan autentikasi JWT / OAuth jika ingin keamanan lebih tinggi.
-#
-# - [ ] Tambahkan pagination untuk data history agar tidak overload di frontend.
-#
-# - [ ] Buat endpoint /summary untuk menyajikan data statistik per hari (opsional).
-#
-# - [ ] Pertimbangkan cache / rate limiter karena data sering dikirim.
-
